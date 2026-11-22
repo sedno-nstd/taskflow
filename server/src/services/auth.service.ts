@@ -18,9 +18,9 @@ class AuthService {
   private generateToken(userId: string, email: string, role: string) {
     const secret = process.env.JWT_SECRET;
     if (!secret) {
-      throw new Error("JWT Secret is not defined");
+      throw ApiError.internal("JWT Secret is not defined");
     }
-    return jwt.sign({ id: userId, email, role }, process.env.JWT_SECRET!, {
+    return jwt.sign({ userId, email, role }, process.env.JWT_SECRET!, {
       expiresIn: "7d",
     });
   }
