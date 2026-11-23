@@ -12,3 +12,6 @@ build/
 
 .vscode
 .next/
+
+server/uploads/*
+!server/uploads/.gitkeep
