@@ -27,7 +27,7 @@ export function AuthForm({ type, ...props }: AuthFormProps) {
 
   const isRegister = type === "register";
 
-  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -49,13 +49,13 @@ export function AuthForm({ type, ...props }: AuthFormProps) {
       router.push(APP_ROUTES.HOME);
     } catch (err) {
       console.log(err);
-      setError("");
+      setError(err instanceof Error ? err.message : "Something went wrong");
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="w-full h-full max-w-md rounded-lg shadow-lg">
+    <div className="w-full h-full max-w-md rounded-lg shadow-xl p-6">
       <h1 className="mb-6 text-2xl font-semibold text-gray-900">
         {isRegister ? "Register" : "Login"}
       </h1>
@@ -68,7 +68,6 @@ export function AuthForm({ type, ...props }: AuthFormProps) {
             placeholder="Alex"
             value={formData.name}
             onChange={handleChange}
-            error={error}
           />
         )}
 
@@ -79,7 +78,6 @@ export function AuthForm({ type, ...props }: AuthFormProps) {
           placeholder="you@example.com"
           value={formData.email}
           onChange={handleChange}
-          error={error}
         />
         <Input
           name="password"
@@ -89,12 +87,21 @@ export function AuthForm({ type, ...props }: AuthFormProps) {
           placeholder="••••••••"
           value={formData.password}
           onChange={handleChange}
-          error={error}
         />
 
-        <Button variant="primary" disabled={isLoading}>
+        <Button
+          variant="primary"
+          disabled={isLoading}
+          className="px-4 py-2 cursor-pointer"
+        >
           {isLoading ? "Loading..." : isRegister ? "Register" : "Login"}
         </Button>
+
+        {error && (
+          <p className="rounded-lg p-3 text-sm font-medium text-red-600">
+            {error}
+          </p>
+        )}
 
         <p className="mt-4 text-center text-sm text-zinc-400">
           {isRegister ? "Already have an account?" : "Haven't account?"}{" "}

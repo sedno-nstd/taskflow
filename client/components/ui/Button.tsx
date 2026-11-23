@@ -2,11 +2,13 @@ interface ButonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text?: string;
   isLoading?: boolean;
   variant?: "primary" | "secondary" | "danger";
+  className?: string;
 }
 
 export function Button({
   text = "Continue",
   variant = "primary",
+  className,
   isLoading,
   ...props
 }: ButonProps) {
@@ -21,7 +23,7 @@ export function Button({
     <button
       disabled={isLoading || props.disabled}
       {...props}
-      className={`${variants[variant]} w-full h-full py-2 px-4 font-medium`}
+      className={`${variants[variant]} w-full h-full font-medium ${className}`}
     >
       {text}
     </button>
