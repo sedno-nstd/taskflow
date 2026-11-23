@@ -3,6 +3,7 @@ import express from "express";
 import router from "./routes";
 import cors from "cors";
 import { errorMiddleware } from "./middlewares/error.middleware";
+import { projectRoutes } from "./routes/project.route";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -17,6 +18,7 @@ app.use(express.json());
 
 app.use("/api", router);
 app.use("/uploads", express.static("uploads"));
+router.use("/projects", projectRoutes);
 
 app.use(errorMiddleware);
 
