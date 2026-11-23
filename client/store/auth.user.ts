@@ -6,6 +6,7 @@ interface UserAuth {
   user: User | null;
   token: string;
   setAuth: (user: User, token: string) => void;
+  updateUser: (data: Partial<User>) => void;
   logout: () => void;
 }
 
@@ -14,6 +15,10 @@ export const useAuthStore = create<UserAuth>()(
     (set) => ({
       user: null,
       token: "",
+      updateUser: (data) =>
+        set((state) => ({
+          user: state.user ? { ...state.user, ...data } : null,
+        })),
       setAuth: (user: User, token: string) =>
         set({
           user: user,

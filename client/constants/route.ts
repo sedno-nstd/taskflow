@@ -14,4 +14,7 @@ export const API_ROUTES = {
     REGISTER: "/auth/register",
     LOGIN: "/auth/login",
   },
+  USERS: {
+    UPDATE_AVATAR: "/users/avatar",
+  },
 } as const;
