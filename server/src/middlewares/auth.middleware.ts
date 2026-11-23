@@ -1,14 +1,8 @@
 import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 import { ApiError } from "../lib/ApiError";
+import { prisma } from "../lib/prisma";
 
-declare global {
-  namespace Express {
-    interface Request {
-      userId?: string;
-    }
-  }
-}
 interface JwtPayload {
   userId: string;
 }
@@ -30,6 +24,15 @@ export const authMiddleware = async (
 
     if (typeof decoded === "string" || !decoded.userId) {
       throw new Error("Invalid token payload");
+    }
+
+    const user = prisma.user.findUnique({
+      where: { id: decoded.userId },
+      select: { id: true },
+    });
+
+    if (!user) {
+      throw ApiError.unauthorized("User not found");
     }
 
     req.userId = decoded.userId;
