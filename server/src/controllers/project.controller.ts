@@ -41,7 +41,7 @@ export class ProjectController {
 
       const projects = await projectService.getAllProjects(ownerId);
 
-      return res.status(200).json({ project: projects });
+      return res.status(200).json({ projects });
     } catch (err) {
       next(err);
     }

@@ -1,16 +1,9 @@
 import { Router } from "express";
 import { authController } from "../controllers/auht.controller";
-import { userController } from "../controllers/user.controller";
-import { authMiddleware } from "../middlewares/auth.middleware";
-import { uploadAvatar } from "../middlewares/upload.middleware";
 
-const userRouter = Router();
+const router = Router();
 
-userRouter.patch(
-  "/avatar",
-  authMiddleware,
-  uploadAvatar.single("avatar"),
-  userController.updateAvatar,
-);
+router.post("/register", authController.register);
+router.post("/login", authController.login);
 
-export default userRouter;
+export default router;
