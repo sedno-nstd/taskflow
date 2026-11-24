@@ -5,7 +5,7 @@ export const APP_ROUTES = {
   NAVIGATION: {
     PROJECTS: "/projects",
     MY_TASKS: "/tasks",
-    CALENDAR: "calendar",
+    CALENDAR: "/calendar",
   },
 } as const;
 
@@ -16,5 +16,9 @@ export const API_ROUTES = {
   },
   USERS: {
     UPDATE_AVATAR: "/users/avatar",
+  },
+  PROJECTS: {
+    BASE: "/projects",
+    BY_ID: (id: string) => `/projects/${id}`,
   },
 } as const;
