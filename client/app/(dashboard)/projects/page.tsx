@@ -53,7 +53,7 @@ export default function Home() {
           </p>
 
           <Button
-            className="max-h-[40px] max-w-[120px] cursor-pointer transition-colors duration-200"
+            className="max-h-10 max-w-30 cursor-pointer transition-colors duration-200"
             variant="secondary"
             text="Create project"
             onClick={() => setIsOpen(true)}
@@ -64,7 +64,7 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold text-gray-900">Projects</h1>
             <Button
-              className="max-w-[200px] cursor-pointer transition-colors duration-200"
+              className="max-w-50 cursor-pointer transition-colors duration-200"
               variant="secondary"
               text="Create project"
               onClick={() => setIsOpen(true)}

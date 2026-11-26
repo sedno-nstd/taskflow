@@ -38,6 +38,7 @@ export function CreateProjectModal({
 
     if (!form?.name.trim()) {
       setError("Name is required");
+      return;
     }
 
     setError("");
@@ -45,7 +46,7 @@ export function CreateProjectModal({
     try {
       const createdProject = await projectService.createProject({
         projectName: form.name.trim(),
-        description: form.description.trim() || undefined,
+        description: form.description?.trim() || undefined,
       });
 
       onSuccess(createdProject);
@@ -66,26 +67,30 @@ export function CreateProjectModal({
       <form
         onSubmit={handleCreatePorject}
         onClick={(e) => e.stopPropagation()}
-        className="flex w-full max-w-[500px] flex-col gap-4 rounded-2xl bg-white p-6 shadow-xl"
+        className="flex w-full max-w-[500px] h-full flex-col gap-4 rounded-2xl bg-white p-6 shadow-xl"
       >
         <Input
+          placeholder="title"
           value={form.name}
           onChange={(e) => handleField("name", e.target.value)}
         />
         <Input
-          value={form.description || undefined}
+          placeholder="description"
+          value={form.description || ""}
           onChange={(e) => handleField("description", e.target.value)}
         />
         {error && <span className="text-sm text-red-500">{error}</span>}
 
-        <div className="flex flex-row gap-3 h-full max-h-[40px]">
+        <div className="flex flex-row gap-3">
           <Button
-            type="submit"
+            className="cursor-pointer max-h-[36px]"
+            type="button"
             variant="danger"
             text="cancel"
             onClick={onClose}
           />
           <Button
+            className="cursor-pointer max-h-[36px]"
             type="submit"
             variant="primary"
             text={isLoading ? "Creating..." : "Create"}
