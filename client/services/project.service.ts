@@ -13,8 +13,6 @@ export const projectService = {
       API_ROUTES.PROJECTS.BASE,
     );
 
-    console.log("RAW GET PROJECTS:", data);
-
     return data.projects || [];
   },
 
