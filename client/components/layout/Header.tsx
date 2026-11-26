@@ -13,7 +13,7 @@ export function Header() {
   const pathname = usePathname();
 
   const isAuthPage =
-    pathname === (`${APP_ROUTES.LOGIN}` || `${APP_ROUTES.REGISTER}`);
+    pathname === `${APP_ROUTES.LOGIN}` || pathname === `${APP_ROUTES.REGISTER}`;
 
   return (
     <header className="w-full h-20 flex items-center justify-between px-10">
