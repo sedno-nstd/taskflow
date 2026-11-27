@@ -29,6 +29,8 @@ function ProjectPageContent() {
 
   return (
     <ProjectDetail
+      projectId={project.id}
+      tasks={project.task ?? []}
       description={project.description as string}
       title={project.name}
     />

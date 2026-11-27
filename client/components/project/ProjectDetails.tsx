@@ -1,24 +1,71 @@
 import { PROJECT_VARIANTS, ProjectVariant } from "@/constants/project-variants";
-import { useState } from "react";
+import { Task } from "@/types/task";
+import { useEffect, useState } from "react";
+import { TaskBoard } from "../task/TaskBoard";
+import { TaskList } from "../task/TaskList";
+import { EmptyState } from "../ui/EmptyState";
+import { Button } from "../ui/Button";
+import { CreateTaskModal } from "../task/CreateTaskModal";
 
 interface ProjectProps {
+  projectId: string;
   title: string;
   description: string;
+  tasks: Task[];
 }
 
-export function ProjectDetail({ description, title }: ProjectProps) {
+export function ProjectDetail({
+  description,
+  title,
+  tasks,
+  projectId,
+}: ProjectProps) {
   const [activeTab, setActiveTab] = useState<ProjectVariant>("board");
+  const [openModal, setOpenModal] = useState(false);
+  const [taskList, setTaskList] = useState<Task[]>(tasks);
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "board":
+        return <TaskBoard tasks={taskList} />;
+      case "list":
+        return <TaskList tasks={taskList} />;
+      case "activity":
+        return (
+          <EmptyState
+            title="No activity yet"
+            description="Project history will appear here."
+          />
+        );
+      case "files":
+        return (
+          <EmptyState
+            title="No files uploaded"
+            description="Attachments for this project will appear here."
+          />
+        );
+    }
+  };
+
   return (
     <div className="flex flex-col w-full h-full">
-      <header className="flex min-w-0 flex-col gap-1.5">
-        <h1 className="text-3xl font-semibold text-gray-900 wrap-break-word">
-          {title}
-        </h1>
-        {description && (
-          <p className="max-w-2xl text-sm text-gray-500 wrap-break-word line-clamp-3">
-            {description}
-          </p>
-        )}
+      <header className="flex min-w-0 flex-row gap-1.5 w-full justify-between">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl font-semibold text-gray-900 wrap-break-word">
+            {title}
+          </h1>
+          {description && (
+            <p className="max-w-2xl text-sm text-gray-500 wrap-break-word line-clamp-3">
+              {description}
+            </p>
+          )}
+        </div>
+        <Button
+          onClick={() => setOpenModal(true)}
+          text="+ create task"
+          variant="orange"
+          className="max-w-[150px] max-h-[40px] cursor-pointer transition-colors"
+        />
       </header>
 
       <nav className="flex items-center gap-2 mt-6" aria-label="Project views">
@@ -43,6 +90,16 @@ export function ProjectDetail({ description, title }: ProjectProps) {
           );
         })}
       </nav>
+
+      <div className="flex-1 pt-6">{renderTabContent()}</div>
+      {openModal && (
+        <CreateTaskModal
+          isOpen={openModal}
+          onClose={() => setOpenModal(false)}
+          projectId={projectId}
+          onCreated={(newTask) => setTaskList((prev) => [newTask, ...prev])}
+        />
+      )}
     </div>
   );
 }
