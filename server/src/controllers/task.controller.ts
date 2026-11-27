@@ -6,9 +6,9 @@ export class TaskController {
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = getUserId(req);
-      const task = await taskService.getAllTasks(userId);
+      const tasks = await taskService.getAllTasks(userId);
 
-      return res.status(200).json({ task });
+      return res.status(200).json({ tasks });
     } catch (err) {
       next(err);
     }
@@ -17,7 +17,7 @@ export class TaskController {
   async getByProject(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = getUserId(req);
-      const { projectId } = req.params;
+      const { projectId } = req.body;
       const task = await taskService.getProjectTasks(
         userId,
         projectId as string,
@@ -45,7 +45,7 @@ export class TaskController {
       const creatorId = getUserId(req);
       const { title, description, status, priority, assigneeId } = req.body;
 
-      const { projectId } = req.params as { projectId: string };
+      const { projectId } = req.body as { projectId: string };
 
       const task = await taskService.createTask({
         creatorId,

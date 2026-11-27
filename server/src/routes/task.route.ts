@@ -8,9 +8,11 @@ router.use(authMiddleware);
 
 router.get("/", taskController.getAll);
 
-router.post("/project/:projectId", taskController.create);
+router.post("/", taskController.create);
 router.get("/project/:projectId", taskController.getByProject);
 
 router.get("/:id", taskController.getById);
-router.put("/:id", taskController.update);
+router.patch("/:id", taskController.update);
 router.delete("/:id", taskController.delete);
+
+export default router;
