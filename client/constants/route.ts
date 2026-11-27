@@ -21,4 +21,8 @@ export const API_ROUTES = {
     BASE: "/projects",
     BY_ID: (id: string) => `/projects/${id}`,
   },
+  TASKS: {
+    BASE: "/tasks",
+    BY_ID: (id: string) => `/tasks/${id}`,
+  },
 } as const;
