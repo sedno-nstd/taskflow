@@ -1,7 +1,7 @@
 interface ButonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text?: string;
   isLoading?: boolean;
-  variant?: "primary" | "secondary" | "danger";
+  variant?: "primary" | "secondary" | "danger" | "orange";
   className?: string;
 }
 
@@ -17,6 +17,8 @@ export function Button({
     secondary:
       "bg-gray-100 text-gray-900 border border-gray-300 hover:bg-gray-200",
     danger: "bg-red-600 text-white hover:bg-red-700 active:bg-red-800",
+    orange:
+      "bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-medium",
   };
 
   return (

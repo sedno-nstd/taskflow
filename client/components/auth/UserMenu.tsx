@@ -6,6 +6,7 @@ import { Button } from "../ui/Button";
 import { APP_ROUTES } from "@/constants/route";
 import { userService } from "@/services/user.service";
 import { useHasMounted } from "@/hooks/useHasMounted";
+import { UserAvatar } from "../ui/UserAvatar";
 
 export function UserMenu() {
   const router = useRouter();
@@ -71,15 +72,7 @@ export function UserMenu() {
         onClick={() => setOpen((prev) => !prev)}
         className="flex h-9 w-9 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-zinc-200 bg-zinc-900 text-sm font-semibold text-white transition hover:opacity-90"
       >
-        {user.avatar ? (
-          <img
-            src={user.avatar}
-            alt={user.name}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <span>{user.name[0]?.toUpperCase()}</span>
-        )}
+        <UserAvatar avatar={user.avatar} name={user.name} size="md" />
       </button>
 
       {open && (
