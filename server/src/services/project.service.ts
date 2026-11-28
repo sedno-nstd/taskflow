@@ -63,23 +63,23 @@ export class ProjectService {
   async updateProject(
     projectId: string,
     ownerId: string,
-    newName?: string,
-    newDescription?: string,
+    name?: string,
+    description?: string,
   ) {
     await this.getProjectById(projectId, ownerId);
 
-    if (newName !== undefined && !newName.trim()) {
+    if (name !== undefined && !name.trim()) {
       throw ApiError.badRequest("Project name cannot be empty");
     }
 
     return prisma.project.update({
       where: { id: projectId },
       data: {
-        ...(newDescription !== undefined && {
-          description: newDescription?.trim() || null,
+        ...(description !== undefined && {
+          description: description?.trim() || null,
         }),
-        ...(newName !== undefined && {
-          name: newName.trim(),
+        ...(name !== undefined && {
+          name: name.trim(),
         }),
       },
     });

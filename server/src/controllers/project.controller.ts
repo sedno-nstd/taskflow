@@ -50,15 +50,15 @@ export class ProjectController {
   async updateProject(req: Request, res: Response, next: NextFunction) {
     try {
       const projectId = req.params.id as string;
-      const { newName, newDescription } = req.body;
+      const { name, description } = req.body;
 
       const ownerId = getUserId(req);
 
       const project = await projectService.updateProject(
         projectId,
         ownerId,
-        newName,
-        newDescription,
+        name,
+        description,
       );
 
       return res.status(200).json({ project });
@@ -73,10 +73,7 @@ export class ProjectController {
 
       const ownerId = getUserId(req);
 
-      const project = await projectService.deleteProjectById(
-        projectId,
-        ownerId,
-      );
+      await projectService.deleteProjectById(projectId, ownerId);
 
       return res.status(204).json({ message: "Project deleted successfully" });
     } catch (err) {
