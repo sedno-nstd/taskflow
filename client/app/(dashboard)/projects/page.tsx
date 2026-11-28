@@ -1,40 +1,36 @@
 "use client";
-import { CreateProjectModal } from "@/components/project/CreateProjectModal";
+import { ProjectModal } from "@/components/project/ProjectModal";
 import { ProjectList } from "@/components/project/ProjectList";
 import { Button } from "@/components/ui/Button";
+import { PageLoader } from "@/components/ui/PageLoader";
 import { useHasMounted } from "@/hooks/useHasMounted";
-import { projectService } from "@/services/project.service";
-import { useAuthStore } from "@/store/auth.user";
-import { Project } from "@/types/project";
+import { UseProjects } from "@/hooks/useProjects";
 import { FolderPlus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Project } from "@/types/project";
 
 export default function Home() {
   const hasMounted = useHasMounted();
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [isOpen, setIsOpen] = useState(false);
-  const token = useAuthStore((state) => state.token);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
 
-  useEffect(() => {
-    if (!token) return;
-
-    projectService
-      .getAllProjects()
-      .then((res) => {
-        setProjects(res ?? []);
-      })
-      .catch((err) => console.error("Failed to load projects", err))
-      .finally(() => setLoading(false));
-  }, [token]);
+  const {
+    projects,
+    loading,
+    addProject,
+    updateProject,
+    deleteProject,
+    createProject,
+  } = UseProjects();
 
   if (!hasMounted || loading) {
-    return (
-      <div className="flex h-full w-full items-center justify-center text-sm text-gray-400 animate-pulse">
-        Loading...
-      </div>
-    );
+    return <PageLoader text="Loading..." />;
   }
+
+  const handleCloseModal = () => {
+    setIsCreateOpen(false);
+    setEditingProject(null);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4">
@@ -53,10 +49,10 @@ export default function Home() {
           </p>
 
           <Button
-            className="max-h-10 max-w-30 cursor-pointer transition-colors duration-200"
-            variant="secondary"
-            text="Create project"
-            onClick={() => setIsOpen(true)}
+            className="cursor-pointer max-w-[180px] px-4 py-2 text-sm transition-colors duration-200"
+            variant="orange"
+            text="+ Create project"
+            onClick={() => setIsCreateOpen(true)}
           />
         </div>
       ) : (
@@ -64,21 +60,32 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold text-gray-900">Projects</h1>
             <Button
-              className="max-w-50 cursor-pointer transition-colors duration-200"
-              variant="secondary"
-              text="Create project"
-              onClick={() => setIsOpen(true)}
+              className="cursor-pointer  max-w-[180px]  px-4 py-2 text-sm transition-colors duration-200"
+              variant="orange"
+              text="+ Create project"
+              onClick={() => setIsCreateOpen(true)}
             />
           </div>
 
-          <ProjectList projects={projects} />
+          <ProjectList
+            projects={projects}
+            onDelete={deleteProject}
+            onEdit={(project) => setEditingProject(project)}
+          />
         </>
       )}
 
-      <CreateProjectModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        onSuccess={(newProject) => setProjects((prev) => [newProject, ...prev])}
+      <ProjectModal
+        isOpen={isCreateOpen || Boolean(editingProject)}
+        onClose={handleCloseModal}
+        initialData={editingProject}
+        onSubmitForm={async (payload) => {
+          if (editingProject) {
+            await updateProject(editingProject.id, payload);
+          } else {
+            await createProject(payload);
+          }
+        }}
       />
     </div>
   );

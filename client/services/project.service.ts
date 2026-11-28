@@ -1,11 +1,6 @@
 import { API_ROUTES } from "@/constants/route";
 import { apiFetch } from "@/lib/api";
-import { Project } from "@/types/project";
-
-export interface CreateProjectDto {
-  projectName: string;
-  description?: string;
-}
+import { CreateProjectDto, Project, UpdateProjectDto } from "@/types/project";
 
 export const projectService = {
   async getAllProjects() {
@@ -40,5 +35,17 @@ export const projectService = {
     await apiFetch<{ project: Project }>(API_ROUTES.PROJECTS.BY_ID(id), {
       method: "DELETE",
     });
+  },
+
+  async updateProject(id: string, dto: UpdateProjectDto) {
+    const update = await apiFetch<{ project: Project }>(
+      API_ROUTES.PROJECTS.BY_ID(id),
+      {
+        method: "PATCH",
+        body: JSON.stringify(dto),
+      },
+    );
+
+    return update.project;
   },
 };
