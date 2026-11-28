@@ -3,7 +3,6 @@ import { Task } from "@/types/task";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Modal } from "../ui/Modal";
-import { Input } from "../ui/Input";
 import { taskService } from "@/services/task.service";
 import { Button } from "../ui/Button";
 
@@ -59,11 +58,20 @@ export function CreateTaskModal({
       <Modal isOpen={isOpen} onClose={onClose}>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-full h-full flex flex-col gap-4 bg-white rounded-lg shadow-xl p-4 max-w-[500px]"
+          className="w-full h-full flex flex-col gap-4 max-w-[500px] max-h-[400px]"
         >
           <div className="flex flex-col gap-2">
             <label htmlFor="">Title</label>
-            <input {...register("title")} />
+            <input
+              type="text"
+              placeholder="e.g. Fix authentication bug"
+              className={`w-full rounded-xl border bg-white px-3.5 py-2 text-sm text-gray-900 outline-none transition-colors placeholder:text-gray-400 ${
+                errors.title
+                  ? "border-red-500 focus:border-red-600"
+                  : "border-gray-200 hover:border-gray-300 focus:border-orange-400"
+              }`}
+              {...register("title")}
+            />
             {errors.title && (
               <span className="text-red-500 font-semibold text-sm">
                 {errors.title.message}
@@ -71,12 +79,12 @@ export function CreateTaskModal({
             )}
           </div>
 
-          <div className="flex flex-col gap-2 outline-none">
+          <div className="flex flex-col gap-2">
             <label htmlFor="">Description</label>
             <textarea
               rows={3}
               placeholder="Optional details"
-              className="border border-gray-600"
+              className="border rounded-lg px-2 py-2 border-gray-600 outline-none resize-none"
               {...register("description")}
             ></textarea>
             {errors.description && (
@@ -90,7 +98,7 @@ export function CreateTaskModal({
             <label htmlFor="">Priority</label>
             <select
               {...register("priority")}
-              className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-orange-400"
+              className="w-full rounded-xl border cursor-pointer border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-orange-400"
             >
               <option value="LOW">low</option>
               <option value="MEDIUM">medium</option>
@@ -102,7 +110,7 @@ export function CreateTaskModal({
             <label htmlFor="">Status</label>
             <select
               {...register("status")}
-              className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-orange-400"
+              className="w-full rounded-xl border cursor-pointer border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-orange-400"
             >
               <option value="TODO">Todo</option>
               <option value="IN_PROGRESS">in progress</option>
@@ -117,14 +125,14 @@ export function CreateTaskModal({
               variant="secondary"
               text="Cancel"
               onClick={onClose}
-              className="cursor-pointer h-10"
+              className="cursor-pointer py-1.5 px-3"
             />
             <Button
               type="submit"
               variant="primary"
               text={isSubmitting ? "Creating..." : "Create task"}
               disabled={isSubmitting}
-              className="cursor-pointer h-10"
+              className="cursor-pointer py-1.5 px-3"
             />
           </div>
         </form>

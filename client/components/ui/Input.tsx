@@ -10,7 +10,7 @@ export function Input({
   label,
   leftIcon,
   error,
-  value = "",
+  value,
   ...props
 }: InputProps) {
   return (
@@ -26,7 +26,7 @@ export function Input({
       <input
         type="text"
         required={required}
-        value={value ?? ""}
+        value={value}
         className={`w-full py-2 px-4 border  text-sm font-medium outline-none rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed  
           ${error ? "border-red-500 focus:border-red-600 " : "border-gray-500 hover:border-blue-600 focus:border-blue-700"} 
           ${leftIcon && "pl-10"}

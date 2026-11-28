@@ -13,7 +13,7 @@ export function Modal({ isOpen, onClose, children, title }: ModalProps) {
     if (!isOpen) return;
 
     const handleCloseModal = (e: KeyboardEvent) => {
-      if (e.key === "esc") onClose();
+      if (e.key === "Escape") onClose();
     };
 
     window.addEventListener("keydown", handleCloseModal);
@@ -24,28 +24,31 @@ export function Modal({ isOpen, onClose, children, title }: ModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 w-full flex flex-col items-center justify-center backdrop-blur-xs">
-      <div className="mb-4 flex items-center justify-between gap-4">
-        {title ? (
-          <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
-        ) : (
-          <div />
-        )}
-        <div
-          className="w-fit items-start justify-end  cursor-pointer"
-          onClick={(e) => e.stopPropagation()}
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-xs"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 shadow-xl"
+      >
+        <button
+          onClick={onClose}
+          type="button"
+          aria-label="Close modal"
+          className="absolute top-4 right-4 cursor-pointer rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700"
         >
-          <button
-            onClick={onClose}
-            type="button"
-            aria-label="Close modal"
-            className="cursor-pointer rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+          <X className="h-5 w-5" />
+        </button>
+
+        {title && (
+          <h2 className="mb-5 pr-8 text-lg font-semibold text-gray-900">
+            {title}
+          </h2>
+        )}
+
+        {children}
       </div>
-      <div className="w-full h-full">{children}</div>
     </div>
   );
 }
